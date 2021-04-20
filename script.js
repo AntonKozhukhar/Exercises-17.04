@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /* 1. Дан инпут. В него вводится число. По потери фокуса сделайте так, чтобы каждая цифра вставилась в новый инпут. Инпутов для цифр изначально не существует, они должны создаться в процессе работы скрипта.
 createElement
@@ -74,23 +74,32 @@ btn.addEventListener('click', () => {
     </div>	
 </div> */
 
-let img = document.getElementById("image");
-let input = document.getElementById("imgInput");
-let btn = document.getElementById("btn");
+let inputImg = document.getElementById('input');
+let btn = document.getElementById('btn');
+let preview = document.querySelector('.preview');
+let loader = document.querySelector('.lds-spinner');
 
-btn.addEventListener("click", () => {});
-
-input.addEventListener("change", readURL(input));
-
-function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            img.src = e.target.result;
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+if (document.querySelector('img')) {
+	document.querySelector('img').remove();
 }
-input.addEventListener("change", function () {
-    readURL(this);
+let img = document.createElement('img');
+function readURL(input) {
+	if (input.files && input.files[0]) {
+		let reader = new FileReader();
+		reader.onload = function (e) {
+			img.src = e.target.result;
+			preview.append(img);
+		};
+		reader.readAsDataURL(input.files[0]);
+	}
+}
+
+btn.addEventListener('click', function () {
+	if (input.files.length != 0) {
+		loader.classList.add('active');
+	}
+	if (img.src) {
+		document.querySelector('img').remove();
+	}
+	setTimeout(readURL, 2000, inputImg);
 });
